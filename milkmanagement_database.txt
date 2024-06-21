@@ -1,0 +1,106 @@
+--Creating MilkManagement Database
+mysql> CREATE DATABASE MilkManagement;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> USE MilkManagement;
+Database changed
+
+--Creating Table Admin
+mysql> CREATE TABLE Admin(
+    -> Admin_id INT PRIMARY KEY,
+    -> Admin_Username VARCHAR(40) UNIQUE,
+    -> Admin_Password VARCHAR(40));
+Query OK, 0 rows affected (0.02 sec)
+
+--Creating Table User
+mysql> CREATE TABLE User(
+    -> User_id INT PRIMARY KEY,
+    -> User_name VARCHAR(40),
+    -> User_Password VARCHAR(40),
+    -> Phn_num NUMERIC(10) NOT NULL);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> ALTER TABLE User MODIFY COLUMN User_name VARCHAR(40) UNIQUE;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE User ADD COLUMN address VARCHAR(50);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--Creating Table Worker
+mysql> CREATE TABLE Worker(
+    -> Worker_id INT PRIMARY KEY,
+    -> Worker_name VARCHAR(40),
+    -> Worker_Password VARCHAR(40),
+    -> salary INT,
+    -> mail_id VARCHAR(100),
+    -> Worker_type VARCHAR(40),
+    -> address VARCHAR(60),
+    -> Phn_num NUMERIC(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> ALTER TABLE Worker MODIFY COLUMN Worker_name VARCHAR(40) UNIQUE;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--Creating Table Product
+mysql> CREATE TABLE Product(
+    -> Product_id INT PRIMARY KEY,
+    -> Product_name VARCHAR(20),
+    -> Quantity_avlb INT,
+    -> Price DECIMAL(10,2));
+Query OK, 0 rows affected (0.02 sec)
+
+--Creating Table LiveStock
+mysql> CREATE TABLE LiveStock(
+    -> LiveStock_id INT PRIMARY KEY,
+    -> LiveSTOCK_type VARCHAR(50),
+    -> Capacity_of_Milk INT);
+Query OK, 0 rows affected (0.01 sec)
+
+--Creating Table Feed_monitoring
+mysql> CREATE TABLE Feed_monitoring(
+    -> Worker_id INT ,
+    -> LiveStock_id INT,
+    -> Feed_type VARCHAR(40),
+    -> PRIMARY KEY(Worker_id,LiveStock_id),
+    -> FOREIGN KEY(Worker_id) REFERENCES Worker(Worker_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    -> FOREIGN KEY(LiveStock_id) REFERENCES LiveStock(LiveStock_id) ON DELETE CASCADE ON UPDATE CASCADE);
+Query OK, 0 rows affected (0.03 sec)
+
+--Creating Table LiveStockDiagonsis
+mysql> CREATE TABLE LiveStockDiagonsis(
+    -> Worker_id INT,
+    -> LiveStock_id INT,
+    -> disease VARCHAR(40),
+    -> disease_status VARCHAR(40),
+    -> expenses INT,
+    -> Vaccine_status VARCHAR(40),
+    -> PRIMARY KEY(Worker_id,LiveStock_id),
+    -> FOREIGN KEY(Worker_id) REFERENCES Worker(Worker_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    -> FOREIGN KEY(LiveStock_id) REFERENCES LiveStock(LiveStock_id) ON DELETE CASCADE ON UPDATE CASCADE);
+Query OK, 0 rows affected (0.03 sec)
+
+--Creating TABLE Bill
+mysql> CREATE TABLE Bill(
+    -> Product_id INT,
+    -> User_id INT,
+    -> Quantity_saled INT ,
+    -> Date_sold DATE,
+    -> PRIMARY KEY(Product_id,User_id),
+    -> FOREIGN KEY(Product_id) REFERENCES Product(Product_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    -> FOREIGN KEY(User_id) REFERENCES User(User_id) ON DELETE CASCADE ON UPDATE CASCADE);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO Admin VALUES(1,'Sandhiya','Sandhiya@1708');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Admin VALUES(2,'Shri','Shri@1705');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Admin VALUES(3,'Dharshini','Dharshini@1109');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
